@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.project.dto.ArticleForm;
 import project.project.entity.Article;
 import org.springframework.ui.Model;
@@ -79,6 +80,22 @@ public class ArticleController {
         }
         // 3. 수정 결과 페이지로 디라이렉트하기
         return "redirect:/articles/" + articleEntity.getId();
+    }
+    // RedirectAttributes 객체로 리다이렉트 페이지에서 사용할 데이터를 남길 수 있음
+    @GetMapping("/articles/{id}/delete")
+    public String delete(@PathVariable Long id, RedirectAttributes rttr){
+        log.info("삭제 요청이 들어왔습니다!");
+        // 1. 삭제할 대상 가져오기
+        Article target = articleRepository.findById(id).orElse(null);
+        log.info(target.toString());
+        // 2. 대상 엔티디 정하기
+        if(target != null){ // 삭제할 대상이 있는지 확인
+            articleRepository.delete(target); // delete() 메서드로 대상 삭제
+            rttr.addFlashAttribute("msg","삭제됐습니다.");
+        }
+        // 3. 결과 페이지로 리다이렉트하기
+        return "redirect:/articles";
+
     }
 
 }
