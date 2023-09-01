@@ -17,7 +17,7 @@ public class CommentDto {
     private String body; //댓글 본문
 
     public static CommentDto createCommentDto(Comment comment) {
-        return  new CommentDto(
+        return new CommentDto(
                 comment.getId(),
                 comment.getArticle().getId(),
                 comment.getNickname(),
